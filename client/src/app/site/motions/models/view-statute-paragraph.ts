@@ -14,8 +14,7 @@ export interface StatuteParagraphTitleInformation {
  * Provides "safe" access to variables and functions in {@link StatuteParagraph}
  * @ignore
  */
-export class ViewStatuteParagraph
-    extends BaseViewModel<StatuteParagraph>
+export class ViewStatuteParagraph extends BaseViewModel<StatuteParagraph>
     implements StatuteParagraphTitleInformation, Searchable {
     public static COLLECTIONSTRING = StatuteParagraph.COLLECTIONSTRING;
     protected _collectionString = StatuteParagraph.COLLECTIONSTRING;

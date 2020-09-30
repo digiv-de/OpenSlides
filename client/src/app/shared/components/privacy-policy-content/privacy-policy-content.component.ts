@@ -6,7 +6,7 @@ import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 
 import { LoginDataService } from 'app/core/ui-services/login-data.service';
-import { BaseViewComponentDirective } from 'app/site/base/base-view';
+import { BaseViewComponent } from 'app/site/base/base-view';
 
 /**
  * Shared component to hold the content of the Privacy Policy.
@@ -17,7 +17,7 @@ import { BaseViewComponentDirective } from 'app/site/base/base-view';
     templateUrl: './privacy-policy-content.component.html',
     styleUrls: ['./privacy-policy-content.component.scss']
 })
-export class PrivacyPolicyContentComponent extends BaseViewComponentDirective implements OnInit {
+export class PrivacyPolicyContentComponent extends BaseViewComponent implements OnInit {
     /**
      * Decides, whether the component can be edited at all.
      * Defaults to `false`.

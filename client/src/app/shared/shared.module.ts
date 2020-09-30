@@ -129,7 +129,6 @@ import { UserMenuComponent } from './components/user-menu/user-menu.component';
 import { JitsiComponent } from './components/jitsi/jitsi.component';
 import { VjsPlayerComponent } from './components/vjs-player/vjs-player.component';
 import { LiveStreamComponent } from './components/live-stream/live-stream.component';
-import { ListOfSpeakersContentComponent } from './components/list-of-speakers-content/list-of-speakers-content.component';
 
 /**
  * Share Module for all "dumb" components and pipes.
@@ -299,8 +298,7 @@ import { ListOfSpeakersContentComponent } from './components/list-of-speakers-co
         AssignmentPollDetailContentComponent,
         JitsiComponent,
         VjsPlayerComponent,
-        LiveStreamComponent,
-        ListOfSpeakersContentComponent
+        LiveStreamComponent
     ],
     declarations: [
         PermsDirective,
@@ -363,8 +361,7 @@ import { ListOfSpeakersContentComponent } from './components/list-of-speakers-co
         AssignmentPollDetailContentComponent,
         JitsiComponent,
         VjsPlayerComponent,
-        LiveStreamComponent,
-        ListOfSpeakersContentComponent
+        LiveStreamComponent
     ],
     providers: [
         {

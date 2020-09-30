@@ -1,4 +1,4 @@
-import { Directive, OnDestroy } from '@angular/core';
+import { OnDestroy } from '@angular/core';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 import { Title } from '@angular/platform-browser';
 
@@ -12,8 +12,7 @@ import { BaseComponent } from '../../base.component';
  * with the error. The error is dismissed, if the component is destroyed, so if the
  * view is leaved.
  */
-@Directive()
-export abstract class BaseViewComponentDirective extends BaseComponent implements OnDestroy {
+export abstract class BaseViewComponent extends BaseComponent implements OnDestroy {
     /**
      * A reference to the current error snack bar.
      */

@@ -5,8 +5,7 @@ export interface ProjectionDefaultTitleInformation {
     display_name: string;
 }
 
-export class ViewProjectionDefault
-    extends BaseViewModel<ProjectionDefault>
+export class ViewProjectionDefault extends BaseViewModel<ProjectionDefault>
     implements ProjectionDefaultTitleInformation {
     public static COLLECTIONSTRING = ProjectionDefault.COLLECTIONSTRING;
     protected _collectionString = ProjectionDefault.COLLECTIONSTRING;

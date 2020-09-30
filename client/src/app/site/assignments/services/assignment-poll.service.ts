@@ -13,8 +13,6 @@ import {
 import { MajorityMethod, PollType, VOTE_UNDOCUMENTED } from 'app/shared/models/poll/base-poll';
 import { ParsePollNumberPipe } from 'app/shared/pipes/parse-poll-number.pipe';
 import { PollKeyVerbosePipe } from 'app/shared/pipes/poll-key-verbose.pipe';
-import { ViewAssignmentOption } from 'app/site/assignments/models/view-assignment-option';
-import { ViewAssignmentPoll } from 'app/site/assignments/models/view-assignment-poll';
 import {
     PollData,
     PollDataOption,
@@ -22,6 +20,8 @@ import {
     PollTableData,
     VotingResult
 } from 'app/site/polls/services/poll.service';
+import { ViewAssignmentOption } from '../models/view-assignment-option';
+import { ViewAssignmentPoll } from '../models/view-assignment-poll';
 
 @Injectable({
     providedIn: 'root'

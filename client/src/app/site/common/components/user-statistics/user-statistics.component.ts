@@ -12,7 +12,7 @@ import {
 } from 'app/core/repositories/agenda/list-of-speakers-repository.service';
 import { DurationService } from 'app/core/ui-services/duration.service';
 import { ViewSpeaker } from 'app/site/agenda/models/view-speaker';
-import { BaseViewComponentDirective } from 'app/site/base/base-view';
+import { BaseViewComponent } from 'app/site/base/base-view';
 
 @Component({
     selector: 'os-user-statistics',
@@ -21,7 +21,7 @@ import { BaseViewComponentDirective } from 'app/site/base/base-view';
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None
 })
-export class UserStatisticsComponent extends BaseViewComponentDirective {
+export class UserStatisticsComponent extends BaseViewComponent {
     /**
      * Returns the total duration for a whole assembly.
      */

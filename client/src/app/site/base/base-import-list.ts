@@ -5,27 +5,20 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Title } from '@angular/platform-browser';
 
 import { TranslateService } from '@ngx-translate/core';
-import { createDS, PblDataSource } from '@pebula/ngrid';
-import { auditTime, distinctUntilChanged } from 'rxjs/operators';
+import { auditTime } from 'rxjs/operators';
 
 import { BaseImportService, NewEntry, ValueLabelCombination } from 'app/core/ui-services/base-import.service';
 import { BaseModel } from 'app/shared/models/base/base-model';
 import { getLongPreview, getShortPreview } from 'app/shared/utils/previewStrings';
-import { BaseViewComponentDirective } from './base-view';
+import { BaseViewComponent } from './base-view';
 
 @Directive()
-export abstract class BaseImportListComponentDirective<M extends BaseModel>
-    extends BaseViewComponentDirective
+export abstract class BaseImportListComponentDirective<M extends BaseModel> extends BaseViewComponent
     implements OnInit {
     /**
      * The data source for a table. Requires to be initialised with a BaseViewModel
      */
     public dataSource: MatTableDataSource<NewEntry<M>>;
-
-    /**
-     * Data source for ngrid
-     */
-    public vScrollDataSource: PblDataSource<NewEntry<M>>;
 
     /**
      * Helper function for previews
@@ -143,23 +136,14 @@ export abstract class BaseImportListComponentDirective<M extends BaseModel>
      */
     public initTable(): void {
         this.dataSource = new MatTableDataSource();
-
-        const entryObservable = this.importer.getNewEntries();
-        this.subscriptions.push(
-            entryObservable.pipe(distinctUntilChanged(), auditTime(100)).subscribe(newEntries => {
-                if (newEntries?.length) {
-                    this.dataSource.data = newEntries;
-                }
-                this.hasFile = newEntries.length > 0;
-            })
-        );
-
-        this.vScrollDataSource = createDS<NewEntry<M>>()
-            .keepAlive()
-            .onTrigger(() => entryObservable)
-            .create();
-
         this.setFilter();
+        this.importer
+            .getNewEntries()
+            .pipe(auditTime(100))
+            .subscribe(newEntries => {
+                this.dataSource.data = newEntries;
+                this.hasFile = newEntries.length > 0;
+            });
     }
 
     /**
@@ -196,26 +180,21 @@ export abstract class BaseImportListComponentDirective<M extends BaseModel>
     public setFilter(): void {
         this.dataSource.filter = '';
         if (this.shown === 'all') {
-            this.dataSource.filterPredicate = () => true;
-            this.vScrollDataSource.setFilter();
+            this.dataSource.filterPredicate = (data, filter) => {
+                return true;
+            };
         } else if (this.shown === 'noerror') {
-            const noErrorFilter = data => {
+            this.dataSource.filterPredicate = (data, filter) => {
                 if (data.status === 'done') {
                     return true;
                 } else if (data.status !== 'error') {
                     return true;
                 }
             };
-
-            this.dataSource.filterPredicate = noErrorFilter;
-            this.vScrollDataSource.setFilter(noErrorFilter);
         } else if (this.shown === 'error') {
-            const hasErrorFilter = data => {
+            this.dataSource.filterPredicate = (data, filter) => {
                 return !!data.errors.length || data.hasDuplicates;
             };
-
-            this.dataSource.filterPredicate = hasErrorFilter;
-            this.vScrollDataSource.setFilter(hasErrorFilter);
         }
         this.dataSource.filter = 'X'; // TODO: This is just a bogus non-null string to trigger the filter
     }

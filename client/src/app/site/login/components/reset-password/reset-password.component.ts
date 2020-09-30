@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'environments/environment';
 
 import { HttpService } from 'app/core/core-services/http.service';
-import { BaseViewComponentDirective } from 'app/site/base/base-view';
+import { BaseViewComponent } from 'app/site/base/base-view';
 
 /**
  * Reset password component.
@@ -19,7 +19,7 @@ import { BaseViewComponentDirective } from 'app/site/base/base-view';
     templateUrl: './reset-password.component.html',
     styleUrls: ['../../assets/reset-password-pages.scss']
 })
-export class ResetPasswordComponent extends BaseViewComponentDirective implements OnInit {
+export class ResetPasswordComponent extends BaseViewComponent implements OnInit {
     /**
      * THis form holds one control for the email.
      */
