@@ -32,6 +32,5 @@ export class MediafileSlideComponent extends BaseSlideComponentDirective<
 
     public constructor() {
         super();
-        (window as any).pdfWorkerSrc = '/assets/js/pdf.worker.min.js';
     }
 }

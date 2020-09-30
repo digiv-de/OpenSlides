@@ -25,7 +25,7 @@
 
         <!-- navigation -->
         <mat-nav-list class="main-nav">
-            <span *ngFor="let entry of mainMenuEntries">
+            <span *ngFor="let entry of mainMenuService.entries">
                 <a
                     [@navItemAnim]
                     *osPerms="entry.permission"

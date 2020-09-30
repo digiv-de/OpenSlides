@@ -5,7 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 
 import { MotionCommentSectionRepositoryService } from 'app/core/repositories/motions/motion-comment-section-repository.service';
-import { BaseViewComponentDirective } from 'app/site/base/base-view';
+import { BaseViewComponent } from 'app/site/base/base-view';
 import { ViewMotionCommentSection } from 'app/site/motions/models/view-motion-comment-section';
 
 /**
@@ -16,7 +16,7 @@ import { ViewMotionCommentSection } from 'app/site/motions/models/view-motion-co
     templateUrl: './motion-comment-section-sort.component.html',
     styleUrls: ['./motion-comment-section-sort.component.scss']
 })
-export class MotionCommentSectionSortComponent extends BaseViewComponentDirective implements OnInit {
+export class MotionCommentSectionSortComponent extends BaseViewComponent implements OnInit {
     /**
      * Holds the models
      */

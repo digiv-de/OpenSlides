@@ -35,8 +35,7 @@ export interface MotionTitleInformation extends TitleInformationWithAgendaItem {
  * Provides "safe" access to variables and functions in {@link Motion}
  * @ignore
  */
-export class ViewMotion
-    extends BaseViewModelWithAgendaItemAndListOfSpeakers<Motion>
+export class ViewMotion extends BaseViewModelWithAgendaItemAndListOfSpeakers<Motion>
     implements MotionTitleInformation, Searchable {
     public get motion(): Motion {
         return this._model;
@@ -335,13 +334,6 @@ export class ViewMotion
             }
         ];
 
-        let projectionDefaultName: string;
-        if (this.isParagraphBasedAmendment()) {
-            projectionDefaultName = 'amendments';
-        } else {
-            projectionDefaultName = 'motions';
-        }
-
         return {
             getBasicProjectorElement: options => ({
                 name: Motion.COLLECTIONSTRING,
@@ -349,7 +341,7 @@ export class ViewMotion
                 getIdentifiers: () => ['name', 'id']
             }),
             slideOptions: slideOptions,
-            projectionDefaultName: projectionDefaultName,
+            projectionDefaultName: 'motions',
             getDialogTitle: this.getAgendaSlideTitle
         };
     }

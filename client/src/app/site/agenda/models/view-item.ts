@@ -10,8 +10,7 @@ export interface ItemTitleInformation {
     title_information: object;
 }
 
-export class ViewItem
-    extends BaseViewModelWithContentObject<Item, BaseViewModelWithAgendaItem>
+export class ViewItem extends BaseViewModelWithContentObject<Item, BaseViewModelWithAgendaItem>
     implements ItemTitleInformation {
     public static COLLECTIONSTRING = Item.COLLECTIONSTRING;
     protected _collectionString = Item.COLLECTIONSTRING;

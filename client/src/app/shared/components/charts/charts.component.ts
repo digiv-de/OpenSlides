@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
 
-import { BaseViewComponentDirective } from 'app/site/base/base-view';
+import { BaseViewComponent } from 'app/site/base/base-view';
 
 /**
  * The different supported chart-types.
@@ -41,7 +41,7 @@ export type ChartData = ChartDate[];
     styleUrls: ['./charts.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ChartsComponent extends BaseViewComponentDirective {
+export class ChartsComponent extends BaseViewComponent {
     /**
      * The type of the chart.
      */

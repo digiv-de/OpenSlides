@@ -1,10 +1,9 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Title } from '@angular/platform-browser';
 
 import { TranslateService } from '@ngx-translate/core';
-import { columnFactory, PblColumnDefinition } from '@pebula/ngrid';
 
 import { NewEntry } from 'app/core/ui-services/base-import.service';
 import { CsvExportService } from 'app/core/ui-services/csv-export.service';
@@ -17,14 +16,12 @@ import { UserImportService } from '../../services/user-import.service';
  */
 @Component({
     selector: 'os-user-import-list',
-    templateUrl: './user-import-list.component.html',
-    styleUrls: ['./user-import-list.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    templateUrl: './user-import-list.component.html'
 })
 export class UserImportListComponent extends BaseImportListComponentDirective<User> {
     public textAreaForm: FormGroup;
 
-    public headerRowDefinition = [
+    public headerRow = [
         'Title',
         'Given name',
         'Surname',
@@ -42,29 +39,6 @@ export class UserImportListComponent extends BaseImportListComponentDirective<Us
         'Vote weight'
     ];
 
-    private statusImportColumn: PblColumnDefinition = {
-        label: this.translate.instant('Status'),
-        prop: `status`
-    };
-
-    private get generateImportColumns(): PblColumnDefinition[] {
-        return this.importer.headerMap.map((property, index: number) => {
-            const singleColumnDef: PblColumnDefinition = {
-                label: this.translate.instant(this.headerRowDefinition[index]),
-                prop: `newEntry.${property}`,
-                type: this.guessType(property as keyof User)
-            };
-            console.log('singleColumnDef ', singleColumnDef);
-
-            return singleColumnDef;
-        });
-    }
-
-    public columnSet = columnFactory()
-        .default({ minWidth: 150 })
-        .table(this.statusImportColumn, ...this.generateImportColumns)
-        .build();
-
     /**
      * Constructor for list view bases
      *
@@ -81,7 +55,7 @@ export class UserImportListComponent extends BaseImportListComponentDirective<Us
         formBuilder: FormBuilder,
         public translate: TranslateService,
         private exporter: CsvExportService,
-        protected importer: UserImportService
+        importer: UserImportService
     ) {
         super(importer, titleService, translate, matSnackBar);
         this.textAreaForm = formBuilder.group({ inputtext: [''] });
@@ -106,7 +80,7 @@ export class UserImportListComponent extends BaseImportListComponentDirective<Us
                 'initialPassword',
                 null,
                 'mmustermann',
-                'male',
+                'm',
                 1.0
             ],
             [
@@ -126,47 +100,10 @@ export class UserImportListComponent extends BaseImportListComponentDirective<Us
                 'diverse',
                 2.0
             ],
-            [
-                null,
-                'Julia',
-                'Bloggs',
-                'London',
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                'jbloggs',
-                'female',
-                1.5
-            ],
+            [null, 'Julia', 'Bloggs', 'London', null, null, null, null, null, null, null, null, 'jbloggs', 'f', 1.5],
             [null, null, 'Executive Board', null, null, null, null, null, null, 1, null, null, 'executive', null, 2.5]
         ];
-        this.exporter.dummyCSVExport(
-            this.headerRowDefinition,
-            rows,
-            `${this.translate.instant('participants-example')}.csv`
-        );
-    }
-
-    /**
-     * Guess the type of the property, since
-     * `const type = typeof User[property];`
-     * always returns undefined
-     */
-    private guessType(userProperty: keyof User): 'string' | 'number' | 'boolean' {
-        const numberProperties: (keyof User)[] = ['id', 'vote_weight'];
-        const booleanProperties: (keyof User)[] = ['is_present', 'is_committee', 'is_active'];
-        if (numberProperties.includes(userProperty)) {
-            return 'number';
-        } else if (booleanProperties.includes(userProperty)) {
-            return 'boolean';
-        } else {
-            return 'string';
-        }
+        this.exporter.dummyCSVExport(this.headerRow, rows, `${this.translate.instant('participants-example')}.csv`);
     }
 
     /**
@@ -188,7 +125,7 @@ export class UserImportListComponent extends BaseImportListComponentDirective<Us
      * Sends the data in the text field input area to the importer
      */
     public parseTextArea(): void {
-        this.importer.parseTextArea(this.textAreaForm.get('inputtext').value);
+        (this.importer as UserImportService).parseTextArea(this.textAreaForm.get('inputtext').value);
     }
 
     /**

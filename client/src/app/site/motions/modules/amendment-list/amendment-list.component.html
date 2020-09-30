@@ -59,13 +59,11 @@
                     {{ motion.submitters }}
                 </span>
 
-                <span *ngIf="showSequentialNumber">
-                    <span *ngIf="motion.submitters.length">
-                        &middot;
-                    </span>
-                    <span>{{ 'Sequential number' | translate }}</span>
-                    {{ motion.id }}
+                <span *ngIf="motion.submitters.length">
+                    &middot;
                 </span>
+                <span>{{ 'Sequential number' | translate }}</span>
+                {{ motion.id }}
             </div>
 
             <!-- State -->

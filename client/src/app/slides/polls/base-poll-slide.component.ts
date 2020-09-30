@@ -1,4 +1,4 @@
-import { Directive, forwardRef, Inject, Input } from '@angular/core';
+import { forwardRef, Inject, Input } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs';
 
@@ -9,8 +9,7 @@ import { PollService } from 'app/site/polls/services/poll.service';
 import { BasePollSlideData } from './base-poll-slide-data';
 import { BaseSlideComponentDirective } from '../base-slide-component';
 
-@Directive()
-export class BasePollSlideComponentDirective<
+export class BasePollSlideComponent<
     T extends BasePollSlideData,
     S extends PollService
 > extends BaseSlideComponentDirective<T> {

@@ -478,7 +478,7 @@ class AssignmentPollViewSet(BasePollViewSet):
 
             options_data = data
 
-    def create_votes_type_votes(self, data, poll, vote_weight, vote_user):
+    def create_votes_type_votes(self, data, poll, user):
         """
         Helper function for handle_(named|pseudoanonymous)_vote
         Assumes data is already validated
@@ -493,28 +493,36 @@ class AssignmentPollViewSet(BasePollViewSet):
                     continue
                 weight = Decimal(amount)
                 if config["users_activate_vote_weight"]:
-                    weight *= vote_weight
+                    weight *= user.vote_weight
                 vote = AssignmentVote.objects.create(
-                    option=option, user=vote_user, weight=weight, value="Y"
+                    option=option, user=user, weight=weight, value="Y"
                 )
                 inform_changed_data(vote, no_delete_on_restriction=True)
         else:  # global_no or global_abstain
             option = options[0]
-            weight = vote_weight if config["users_activate_vote_weight"] else Decimal(1)
+            weight = (
+                user.vote_weight if config["users_activate_vote_weight"] else Decimal(1)
+            )
             vote = AssignmentVote.objects.create(
-                option=option, user=vote_user, weight=weight, value=data
+                option=option, user=user, weight=weight, value=data
             )
             inform_changed_data(vote, no_delete_on_restriction=True)
             inform_changed_data(option)
             inform_changed_data(poll)
 
-    def create_votes_types_yn_yna(self, data, poll, vote_weight, vote_user):
+        poll.voted.add(user)
+
+    def create_votes_types_yn_yna(self, data, poll, check_user, vote_user):
         """
-        Helper function for handle_(named|pseudoanonymous)_vote
-        Assumes data is already validated
+        check_user is used for the voted-array and weight of the vote,
+        vote_user is the one put into the vote
         """
         options = poll.get_options()
-        weight = vote_weight if config["users_activate_vote_weight"] else Decimal(1)
+        weight = (
+            check_user.vote_weight
+            if config["users_activate_vote_weight"]
+            else Decimal(1)
+        )
         for option_id, result in data.items():
             option = options.get(pk=option_id)
             vote = AssignmentVote.objects.create(
@@ -523,28 +531,30 @@ class AssignmentPollViewSet(BasePollViewSet):
             inform_changed_data(vote, no_delete_on_restriction=True)
             inform_changed_data(option, no_delete_on_restriction=True)
 
+        poll.voted.add(check_user)
+
     def add_user_to_voted_array(self, user, poll):
         VotedModel = AssignmentPoll.voted.through
         VotedModel.objects.create(assignmentpoll=poll, user=user)
 
     def handle_named_vote(self, data, poll, user):
         if poll.pollmethod == AssignmentPoll.POLLMETHOD_VOTES:
-            self.create_votes_type_votes(data, poll, user.vote_weight, user)
+            self.create_votes_type_votes(data, poll, user)
         elif poll.pollmethod in (
             AssignmentPoll.POLLMETHOD_YN,
             AssignmentPoll.POLLMETHOD_YNA,
         ):
-            self.create_votes_types_yn_yna(data, poll, user.vote_weight, user)
+            self.create_votes_types_yn_yna(data, poll, user, user)
 
     def handle_pseudoanonymous_vote(self, data, poll, user):
         if poll.pollmethod == AssignmentPoll.POLLMETHOD_VOTES:
-            self.create_votes_type_votes(data, poll, user.vote_weight, None)
+            self.create_votes_type_votes(data, poll, user)
 
         elif poll.pollmethod in (
             AssignmentPoll.POLLMETHOD_YN,
             AssignmentPoll.POLLMETHOD_YNA,
         ):
-            self.create_votes_types_yn_yna(data, poll, user.vote_weight, None)
+            self.create_votes_types_yn_yna(data, poll, user, None)
 
     def convert_option_data(self, poll, data):
         poll_options = poll.get_options()

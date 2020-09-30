@@ -6,16 +6,15 @@ RUN useradd -m openslides
 RUN chown -R openslides /build/app
 
 USER root
-RUN npm install -g @angular/cli@^10
+RUN npm install -g @angular/cli@^9
 RUN ng config -g cli.warnings.versionMismatch false
 
 USER openslides
 COPY package.json .
-COPY package-lock.json .
-RUN npm ci
+RUN npm install
 COPY browserslist *.json ./
 COPY src ./src
-RUN npm run build-to-dir /build/app/static
+RUN npm run build
 
 COPY docker/client-version.txt static/
 

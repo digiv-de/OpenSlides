@@ -120,11 +120,4 @@ export class AmendmentFilterListService extends MotionFilterListService {
             return [this.motionFilterOptions].concat(super.getFilterDefinitions());
         }
     }
-
-    /**
-     * Override the parents 'isWorkflowEnabled', only consider the enabledWorkflows.amendment
-     */
-    protected isWorkflowEnabled(workflowId: number): boolean {
-        return workflowId === this.enabledWorkflows.amendment;
-    }
 }

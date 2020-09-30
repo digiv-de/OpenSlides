@@ -317,7 +317,7 @@ export class ProjectorService {
      * @param element The projector element
      * @returns the view model from the projector element
      */
-    public getViewModelFromIdentifiableProjectorElement<T extends BaseProjectableViewModel>(
+    public getViewModelFromProjectorElement<T extends BaseProjectableViewModel>(
         element: IdentifiableProjectorElement
     ): T {
         this.assertElementIsMappable(element);
@@ -328,16 +328,12 @@ export class ProjectorService {
         return viewModel;
     }
 
-    public getViewModelFromProjectorElement<T extends BaseProjectableViewModel>(element: ProjectorElement): T {
-        const idElement = this.slideManager.getIdentifiableProjectorElement(element);
-        return this.getViewModelFromIdentifiableProjectorElement(idElement);
-    }
-
     /**
      */
     public getSlideTitle(element: ProjectorElement): ProjectorTitle {
         if (this.slideManager.canSlideBeMappedToModel(element.name)) {
-            const viewModel = this.getViewModelFromProjectorElement(element);
+            const idElement = this.slideManager.getIdentifiableProjectorElement(element);
+            const viewModel = this.getViewModelFromProjectorElement(idElement);
             if (viewModel) {
                 return viewModel.getProjectorTitle();
             }

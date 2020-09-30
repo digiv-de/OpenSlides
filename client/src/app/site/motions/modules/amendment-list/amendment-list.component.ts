@@ -13,7 +13,6 @@ import { AmendmentFilterListService } from '../../services/amendment-filter-list
 import { AmendmentSortListService } from '../../services/amendment-sort-list.service';
 import { StorageService } from 'app/core/core-services/storage.service';
 import { MotionRepositoryService } from 'app/core/repositories/motions/motion-repository.service';
-import { ConfigService } from 'app/core/ui-services/config.service';
 import { LinenumberingService } from 'app/core/ui-services/linenumbering.service';
 import { OverlayService } from 'app/core/ui-services/overlay.service';
 import { ItemVisibilityChoices } from 'app/shared/models/agenda/item';
@@ -52,8 +51,6 @@ export class AmendmentListComponent extends BaseListViewComponent<ViewMotion> im
      */
     public itemVisibility = ItemVisibilityChoices;
 
-    public showSequentialNumber: boolean;
-
     /**
      * Column defintiion
      */
@@ -88,7 +85,7 @@ export class AmendmentListComponent extends BaseListViewComponent<ViewMotion> im
      * @param motionRepo get the motions
      * @param motionSortService the default motion sorter
      *
-     * @param Service get config vars
+     * @param configService get config vars
      */
     public constructor(
         titleService: Title,
@@ -105,8 +102,7 @@ export class AmendmentListComponent extends BaseListViewComponent<ViewMotion> im
         private motionExport: MotionExportService,
         private linenumberingService: LinenumberingService,
         private pdfExport: MotionPdfExportService,
-        private overlayService: OverlayService,
-        private configService: ConfigService
+        private overlayService: OverlayService
     ) {
         super(titleService, translate, matSnackBar, storage);
         super.setTitle('Amendments');
@@ -128,10 +124,6 @@ export class AmendmentListComponent extends BaseListViewComponent<ViewMotion> im
         } else {
             this.amendmentFilterService.parentMotionId = undefined;
         }
-
-        this.configService
-            .get<boolean>('motions_show_sequential_numbers')
-            .subscribe(show => (this.showSequentialNumber = show));
     }
 
     /**
